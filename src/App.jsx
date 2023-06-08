@@ -1,24 +1,66 @@
 import { useState } from "react";
 
 import Header from "./components/Header";
+import Button from "./components/Button";
 
 function App() {
-  //NOTE - Cantidad Inicial de dinero. Y su función cual lo modifica.
   const [cantidad, setCantidad] = useState(10000);
-  //NOTE - Evento OnChange
+
+  const MAX = 20000;
+  const MIN = 0;
+  const STEP = 100;
+
   const handleChange = (e) => {
     setCantidad(+e.target.value);
+  };
+
+  const handleClickDecremento = () => {
+    const valor = cantidad - STEP;
+
+    if (valor < MIN) {
+      alert("El valor no puede ser menor a 0");
+      return;
+    }
+
+    setCantidad(valor);
+  };
+
+  const handleClickIncremento = () => {
+    const valor = cantidad + STEP;
+
+    if (valor > MAX) {
+      alert("El valor no puede ser mayor a 20000");
+      return;
+    }
+
+    setCantidad(valor);
   };
 
   return (
     <div className="my-20 max-w-lg mx-auto bg-white shadow p-10">
       <Header />
+      <div className="flex justify-between my-6">
+        <Button 
+        operador="-"
+        fn={handleClickDecremento}
+        />
+        <Button
+        operador="+"
+        fn={handleClickIncremento}
+        />
+      </div>
       <input
         type="range"
         className="w-full h-6 bg-slate-50 accent-lime-500 hover:accent-lime-600"
         onChange={handleChange}
+        min={MIN}
+        max={MAX}
+        step={STEP}
+        value={cantidad}
       />
-      <p className="text-4xl font-extrabold text-center text-gray-800">{cantidad}</p>
+      <p className="text-4xl font-extrabold text-center text-gray-800">
+        {cantidad}
+      </p>
     </div>
   );
 }
