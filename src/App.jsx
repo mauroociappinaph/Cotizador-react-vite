@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import Header from "./components/Header";
 import Button from "./components/Button";
+import {formatearDinero} from "./helpers/index";
 
 function App() {
   const [cantidad, setCantidad] = useState(10000);
@@ -40,14 +41,8 @@ function App() {
     <div className="my-20 max-w-lg mx-auto bg-white shadow p-10">
       <Header />
       <div className="flex justify-between my-6">
-        <Button 
-        operador="-"
-        fn={handleClickDecremento}
-        />
-        <Button
-        operador="+"
-        fn={handleClickIncremento}
-        />
+        <Button operador="-" fn={handleClickDecremento} />
+        <Button operador="+" fn={handleClickIncremento} />
       </div>
       <input
         type="range"
@@ -59,7 +54,7 @@ function App() {
         value={cantidad}
       />
       <p className="text-4xl font-extrabold text-center text-gray-800">
-        {cantidad}
+        {formatearDinero(cantidad)}
       </p>
     </div>
   );
