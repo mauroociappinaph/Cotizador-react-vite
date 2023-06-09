@@ -2,17 +2,22 @@ import { useEffect, useState } from "react";
 
 import Header from "./components/Header";
 import Button from "./components/Button";
-import { formatearDinero , calcularTotalAPagar } from "./helpers/index";
+import { formatearDinero, calcularTotalAPagar } from "./helpers/index";
 
 function App() {
   const [cantidad, setCantidad] = useState(10000);
   const [meses, setMeses] = useState(6);
   const [total, setTotal] = useState(0);
+  const [pago, setPago] = useState(0);
 
-useEffect(() => {
-  const resultadoTotalPagar = calcularTotalAPagar(cantidad, meses);
-  setTotal(resultadoTotalPagar);
-}, [cantidad, meses]);
+  useEffect(() => {
+    const resultadoTotalPagar = calcularTotalAPagar(cantidad, meses);
+    setTotal(resultadoTotalPagar);
+  }, [cantidad, meses]);
+
+  useEffect(() => {
+    setPago(total / meses);
+  }, [total]);
 
   const MAX = 20000;
   const MIN = 0;
@@ -47,13 +52,13 @@ useEffect(() => {
   return (
     <div className="my-20 max-w-lg mx-auto bg-white shadow p-10">
       <Header />
-      <div className="flex justify-between my-6">
+      <div className="flex  justify-between my-6">
         <Button operador="-" fn={handleClickDecremento} />
         <Button operador="+" fn={handleClickIncremento} />
       </div>
       <input
         type="range"
-        className="w-full h-6 bg-slate-50 accent-lime-500 hover:accent-lime-600"
+        className="w-full h-6 bg-gray-200 rounded-lg appearance-none"
         onChange={handleChange}
         min={MIN}
         max={MAX}
@@ -78,7 +83,7 @@ useEffect(() => {
         <option value="18">18</option>
         <option value="24">24</option>
       </select>
-      <div className="my-5 flex space-y-3 bg-gray-50 p-5 justify-center items-center">
+      <div className="my-5 flex flex-col space-y-3 bg-gray-100 p-5 justify-center items-center">
         <h2 className="text-2xl font-bold text-center text-gray-500">
           Resumen <span className="text-indigo-500">de pagos</span>
         </h2>
@@ -86,10 +91,15 @@ useEffect(() => {
           {meses} Meses
         </p>
         <p className="text-xl text-gray-500 text-center font-bold">
-          {total} Total a pagar
+          {formatearDinero(total)} Total a pagar
         </p>
-        <p className="text-xl text-gray-500 text-center font-bold">Mensuales</p>
+        <p className="text-xl text-gray-500 text-center font-bold">
+          {formatearDinero(pago)} Mensuales
+        </p>
       </div>
+      <p className="text-center"> 
+        Trabajo realizado por <a href="https://www.linkedin.com/in/maurojoseciappina/"> <span className="text-indigo-500"> Mauroo Ciappina </span></a>.  
+      </p>
     </div>
   );
 }
